@@ -112,7 +112,9 @@ The React Native wrapper for SAP Emarsys SDK automatically integrates the **Emar
 
 2. Add your `google-services.json` file into the app’s assets folder.
 3. *(Optional)* Provide a custom Android **push notification icon**:
-   - Place an image named **`mobile_engage_logo_icon.jpg`** inside the app’s `assets` folder.
+   - Place an image named **`mobile_engage_logo_icon.png`** inside the app’s `assets` folder.
+   - The file **must be a PNG** (not JPG): Android tints the small notification icon and only uses the alpha channel, so the image needs transparency. Non-transparent pixels should be white; everything else must be transparent.
+   - Recommended size: **96×96 px** (24×24 dp at xxxhdpi) — Android will downscale it for lower-density devices.
    - During build, it will be copied into the correct Android resources directory (`res/drawable`).
 
 4. Run prebuild to apply the changes:

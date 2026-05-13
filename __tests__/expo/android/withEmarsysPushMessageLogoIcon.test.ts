@@ -113,20 +113,20 @@ describe('withPushMessageLogoIcon', () => {
   });
 
   describe('file operations', () => {
-    it('should copy mobile_engage_logo_icon.jpg when source file exists', async () => {
+    it('should copy mobile_engage_logo_icon.png when source file exists', async () => {
       mockFs.existsSync.mockReturnValue(true);
       mockPath.join
-        .mockReturnValueOnce('/test/project/assets/mobile_engage_logo_icon.jpg') // source path
-        .mockReturnValueOnce('/test/project/android/app/src/main/res/drawable/mobile_engage_logo_icon.jpg'); // dest path
+        .mockReturnValueOnce('/test/project/assets/images/mobile_engage_logo_icon.png') // source path
+        .mockReturnValueOnce('/test/project/android/app/src/main/res/drawable/mobile_engage_logo_icon.png'); // dest path
       mockPath.dirname.mockReturnValue('/test/project/android/app/src/main/res/drawable');
 
       const result = await withEmarsysPushMessageLogoIcon(mockConfig);
 
-      expect(mockFs.existsSync).toHaveBeenCalledWith('/test/project/assets/mobile_engage_logo_icon.jpg');
+      expect(mockFs.existsSync).toHaveBeenCalledWith('/test/project/assets/images/mobile_engage_logo_icon.png');
       expect(mockFs.mkdirSync).toHaveBeenCalledWith('/test/project/android/app/src/main/res/drawable', { recursive: true });
       expect(mockFs.copyFileSync).toHaveBeenCalledWith(
-        '/test/project/assets/mobile_engage_logo_icon.jpg',
-        '/test/project/android/app/src/main/res/drawable/mobile_engage_logo_icon.jpg'
+        '/test/project/assets/images/mobile_engage_logo_icon.png',
+        '/test/project/android/app/src/main/res/drawable/mobile_engage_logo_icon.png'
       );
       // Function should return some config object
       expect(result).toBeDefined();
@@ -134,14 +134,14 @@ describe('withPushMessageLogoIcon', () => {
 
     it('should skip file operations and warn when source file does not exist', async () => {
       mockFs.existsSync.mockReturnValue(false);
-      mockPath.join.mockReturnValueOnce('/test/project/assets/mobile_engage_logo_icon.jpg');
+      mockPath.join.mockReturnValueOnce('/test/project/assets/images/mobile_engage_logo_icon.png');
 
       const result = await withEmarsysPushMessageLogoIcon(mockConfig);
 
-      expect(mockFs.existsSync).toHaveBeenCalledWith('/test/project/assets/mobile_engage_logo_icon.jpg');
+      expect(mockFs.existsSync).toHaveBeenCalledWith('/test/project/assets/images/mobile_engage_logo_icon.png');
       expect(mockFs.mkdirSync).not.toHaveBeenCalled();
       expect(mockFs.copyFileSync).not.toHaveBeenCalled();
-      expect(mockConsoleWarn).toHaveBeenCalledWith('Source file /test/project/assets/mobile_engage_logo_icon.jpg does not exist. Skipping copy.');
+      expect(mockConsoleWarn).toHaveBeenCalledWith('Source file /test/project/assets/images/mobile_engage_logo_icon.png does not exist. Skipping copy.');
       // Function should return some config object
       expect(result).toBeDefined();
     });
@@ -149,8 +149,8 @@ describe('withPushMessageLogoIcon', () => {
     it('should create destination directory recursively', async () => {
       mockFs.existsSync.mockReturnValue(true);
       mockPath.join
-        .mockReturnValueOnce('/test/project/assets/mobile_engage_logo_icon.jpg')
-        .mockReturnValueOnce('/test/project/android/app/src/main/res/drawable/mobile_engage_logo_icon.jpg');
+        .mockReturnValueOnce('/test/project/assets/images/mobile_engage_logo_icon.png')
+        .mockReturnValueOnce('/test/project/android/app/src/main/res/drawable/mobile_engage_logo_icon.png');
       mockPath.dirname.mockReturnValue('/test/project/android/app/src/main/res/drawable');
 
       await withEmarsysPushMessageLogoIcon(mockConfig);
@@ -163,9 +163,9 @@ describe('withPushMessageLogoIcon', () => {
     it('should add meta-data to android manifest when source file exists', async () => {
       mockFs.existsSync.mockReturnValue(true);
       mockPath.join
-        .mockReturnValueOnce('/test/project/assets/mobile_engage_logo_icon.jpg') // for dangerous mod
-        .mockReturnValueOnce('/test/project/android/app/src/main/res/drawable/mobile_engage_logo_icon.jpg') // for dangerous mod
-        .mockReturnValueOnce('/test/project/assets/mobile_engage_logo_icon.jpg'); // for manifest mod
+        .mockReturnValueOnce('/test/project/assets/images/mobile_engage_logo_icon.png') // for dangerous mod
+        .mockReturnValueOnce('/test/project/android/app/src/main/res/drawable/mobile_engage_logo_icon.png') // for dangerous mod
+        .mockReturnValueOnce('/test/project/assets/images/mobile_engage_logo_icon.png'); // for manifest mod
 
       const result = await withEmarsysPushMessageLogoIcon(mockConfig);
 
@@ -183,13 +183,13 @@ describe('withPushMessageLogoIcon', () => {
         .mockReturnValueOnce(false) // for dangerous mod
         .mockReturnValueOnce(false); // for manifest mod
       mockPath.join
-        .mockReturnValueOnce('/test/project/assets/mobile_engage_logo_icon.jpg') // for dangerous mod
-        .mockReturnValueOnce('/test/project/assets/mobile_engage_logo_icon.jpg'); // for manifest mod
+        .mockReturnValueOnce('/test/project/assets/images/mobile_engage_logo_icon.png') // for dangerous mod
+        .mockReturnValueOnce('/test/project/assets/images/mobile_engage_logo_icon.png'); // for manifest mod
 
       const result = await withEmarsysPushMessageLogoIcon(mockConfig);
 
       expect(setMetaData).not.toHaveBeenCalled();
-      expect(mockConsoleWarn).toHaveBeenCalledWith('Source file /test/project/assets/mobile_engage_logo_icon.jpg does not exist. Skipping AndroidManifest update.');
+      expect(mockConsoleWarn).toHaveBeenCalledWith('Source file /test/project/assets/images/mobile_engage_logo_icon.png does not exist. Skipping AndroidManifest update.');
       // Function should return some config object
       expect(result).toBeDefined();
     });
@@ -222,9 +222,9 @@ describe('withPushMessageLogoIcon', () => {
 
       mockFs.existsSync.mockReturnValue(true);
       mockPath.join
-        .mockReturnValueOnce('/test/project/assets/mobile_engage_logo_icon.jpg')
-        .mockReturnValueOnce('/test/project/android/app/src/main/res/drawable/mobile_engage_logo_icon.jpg')
-        .mockReturnValueOnce('/test/project/assets/mobile_engage_logo_icon.jpg');
+        .mockReturnValueOnce('/test/project/assets/images/mobile_engage_logo_icon.png')
+        .mockReturnValueOnce('/test/project/android/app/src/main/res/drawable/mobile_engage_logo_icon.png')
+        .mockReturnValueOnce('/test/project/assets/images/mobile_engage_logo_icon.png');
 
       const result = await withEmarsysPushMessageLogoIcon(configWithEmptyApp);
 
@@ -261,9 +261,9 @@ describe('withPushMessageLogoIcon', () => {
 
       mockFs.existsSync.mockReturnValue(true);
       mockPath.join
-        .mockReturnValueOnce('/test/project/assets/mobile_engage_logo_icon.jpg')
-        .mockReturnValueOnce('/test/project/android/app/src/main/res/drawable/mobile_engage_logo_icon.jpg')
-        .mockReturnValueOnce('/test/project/assets/mobile_engage_logo_icon.jpg');
+        .mockReturnValueOnce('/test/project/assets/images/mobile_engage_logo_icon.png')
+        .mockReturnValueOnce('/test/project/android/app/src/main/res/drawable/mobile_engage_logo_icon.png')
+        .mockReturnValueOnce('/test/project/assets/images/mobile_engage_logo_icon.png');
 
       const result = await withEmarsysPushMessageLogoIcon(configWithNonArrayApp);
 
@@ -280,9 +280,9 @@ describe('withPushMessageLogoIcon', () => {
 
       mockFs.existsSync.mockReturnValue(true);
       mockPath.join
-        .mockReturnValueOnce('/test/project/assets/mobile_engage_logo_icon.jpg')
-        .mockReturnValueOnce('/test/project/android/app/src/main/res/drawable/mobile_engage_logo_icon.jpg')
-        .mockReturnValueOnce('/test/project/assets/mobile_engage_logo_icon.jpg');
+        .mockReturnValueOnce('/test/project/assets/images/mobile_engage_logo_icon.png')
+        .mockReturnValueOnce('/test/project/android/app/src/main/res/drawable/mobile_engage_logo_icon.png')
+        .mockReturnValueOnce('/test/project/assets/images/mobile_engage_logo_icon.png');
 
       // This should not throw an error
       expect(() => withEmarsysPushMessageLogoIcon(configWithoutModResults)).not.toThrow();
@@ -293,9 +293,9 @@ describe('withPushMessageLogoIcon', () => {
     it('should perform both file operations and manifest modifications when source exists', async () => {
       mockFs.existsSync.mockReturnValue(true);
       mockPath.join
-        .mockReturnValueOnce('/test/project/assets/mobile_engage_logo_icon.jpg')
-        .mockReturnValueOnce('/test/project/android/app/src/main/res/drawable/mobile_engage_logo_icon.jpg')
-        .mockReturnValueOnce('/test/project/assets/mobile_engage_logo_icon.jpg');
+        .mockReturnValueOnce('/test/project/assets/images/mobile_engage_logo_icon.png')
+        .mockReturnValueOnce('/test/project/android/app/src/main/res/drawable/mobile_engage_logo_icon.png')
+        .mockReturnValueOnce('/test/project/assets/images/mobile_engage_logo_icon.png');
 
       const result = await withEmarsysPushMessageLogoIcon(mockConfig);
 
@@ -316,18 +316,18 @@ describe('withPushMessageLogoIcon', () => {
     it('should skip both operations when source file does not exist', async () => {
       mockFs.existsSync.mockReturnValue(false);
       mockPath.join
-        .mockReturnValueOnce('/test/project/assets/mobile_engage_logo_icon.jpg')
-        .mockReturnValueOnce('/test/project/assets/mobile_engage_logo_icon.jpg');
+        .mockReturnValueOnce('/test/project/assets/images/mobile_engage_logo_icon.png')
+        .mockReturnValueOnce('/test/project/assets/images/mobile_engage_logo_icon.png');
 
       const result = await withEmarsysPushMessageLogoIcon(mockConfig);
 
       // Verify file operations were skipped
       expect(mockFs.copyFileSync).not.toHaveBeenCalled();
-      expect(mockConsoleWarn).toHaveBeenCalledWith('Source file /test/project/assets/mobile_engage_logo_icon.jpg does not exist. Skipping copy.');
+      expect(mockConsoleWarn).toHaveBeenCalledWith('Source file /test/project/assets/images/mobile_engage_logo_icon.png does not exist. Skipping copy.');
       
       // Verify manifest modifications were skipped
       expect(setMetaData).not.toHaveBeenCalled();
-      expect(mockConsoleWarn).toHaveBeenCalledWith('Source file /test/project/assets/mobile_engage_logo_icon.jpg does not exist. Skipping AndroidManifest update.');
+      expect(mockConsoleWarn).toHaveBeenCalledWith('Source file /test/project/assets/images/mobile_engage_logo_icon.png does not exist. Skipping AndroidManifest update.');
       
       // Function should return some config object
       expect(result).toBeDefined();
@@ -341,18 +341,18 @@ describe('withPushMessageLogoIcon', () => {
       await withEmarsysPushMessageLogoIcon(mockConfig);
 
       // Check source path construction (called twice - once for each mod)
-      expect(mockPath.join).toHaveBeenCalledWith('/test/project', 'assets', 'mobile_engage_logo_icon.jpg');
+      expect(mockPath.join).toHaveBeenCalledWith('/test/project', 'assets', 'images', 'mobile_engage_logo_icon.png');
       
       // Check destination path construction
-      expect(mockPath.join).toHaveBeenCalledWith('/test/project', 'android', 'app', 'src', 'main', 'res', 'drawable', 'mobile_engage_logo_icon.jpg');
+      expect(mockPath.join).toHaveBeenCalledWith('/test/project', 'android', 'app', 'src', 'main', 'res', 'drawable', 'mobile_engage_logo_icon.png');
     });
 
     it('should use correct drawable reference in meta-data', async () => {
       mockFs.existsSync.mockReturnValue(true);
       mockPath.join
-        .mockReturnValueOnce('/test/project/assets/mobile_engage_logo_icon.jpg')
-        .mockReturnValueOnce('/test/project/android/app/src/main/res/drawable/mobile_engage_logo_icon.jpg')
-        .mockReturnValueOnce('/test/project/assets/mobile_engage_logo_icon.jpg');
+        .mockReturnValueOnce('/test/project/assets/images/mobile_engage_logo_icon.png')
+        .mockReturnValueOnce('/test/project/android/app/src/main/res/drawable/mobile_engage_logo_icon.png')
+        .mockReturnValueOnce('/test/project/assets/images/mobile_engage_logo_icon.png');
 
       await withEmarsysPushMessageLogoIcon(mockConfig);
 

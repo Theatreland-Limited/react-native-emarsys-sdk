@@ -10,8 +10,8 @@ export const withEmarsysPushMessageLogoIcon: ConfigPlugin = (config) => {
       const fs = require('fs');
       const path = require('path');
       const projectRoot = config.modRequest.projectRoot;
-      const source = path.join(projectRoot, 'assets', `${MOBILE_ENGAGE_LOGO_ICON}.jpg`);
-      const dest = path.join(projectRoot, 'android', 'app', 'src', 'main', 'res', 'drawable', `${MOBILE_ENGAGE_LOGO_ICON}.jpg`);
+      const source = path.join(projectRoot, 'assets', 'images', `${MOBILE_ENGAGE_LOGO_ICON}.png`);
+      const dest = path.join(projectRoot, 'android', 'app', 'src', 'main', 'res', 'drawable', `${MOBILE_ENGAGE_LOGO_ICON}.png`);
 
       if (!fs.existsSync(source)) {
         console.warn(`Source file ${source} does not exist. Skipping copy.`);
@@ -28,7 +28,7 @@ export const withEmarsysPushMessageLogoIcon: ConfigPlugin = (config) => {
     const fs = require('fs');
     const path = require('path');
     const projectRoot = config.modRequest.projectRoot;
-    const source = path.join(projectRoot, 'assets', `${MOBILE_ENGAGE_LOGO_ICON}.jpg`);
+    const source = path.join(projectRoot, 'assets', 'images', `${MOBILE_ENGAGE_LOGO_ICON}.png`);
     if (!fs.existsSync(source)) {
       console.warn(`Source file ${source} does not exist. Skipping AndroidManifest update.`);
       return config;
