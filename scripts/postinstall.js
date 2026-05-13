@@ -9,17 +9,6 @@ const fs = require('fs').promises;
   podspec = podspec.replace("s.exclude_files = '", "s.exclude_files = 'ios/");
   await fs.writeFile('RNEmarsysSDK.podspec', podspec);
 
-  // Check if expo exist
-  let expoExist = true;
-  try {
-    require('expo/package.json');
-    require('expo-modules-core/package.json');
-    expoExist = true;
-  // eslint-disable-next-line no-unused-vars
-  } catch (error) {
-    expoExist = false;
-  }
-
   // Enable/disable expo plugin files
   const expoPluginFiles = [
     'android/build.gradle',
@@ -29,9 +18,9 @@ const fs = require('fs').promises;
   ];
   const enableStart = '// Expo plugin - START';
   const disableStart = '/* Expo plugin - START';
-  for (let file of expoPluginFiles) {
+  for (const file of expoPluginFiles) {
     let content = await fs.readFile(file, { encoding: 'utf8' });
-    content = expoExist ? content.replace(disableStart, enableStart) : content.replace(enableStart, disableStart);
+    content = content.replace(disableStart, enableStart);
     await fs.writeFile(file, content);
   }
 
