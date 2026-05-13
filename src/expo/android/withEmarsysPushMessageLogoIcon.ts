@@ -1,5 +1,5 @@
 import { ConfigPlugin, withAndroidManifest, withDangerousMod } from 'expo/config-plugins';
-import { setMetaData } from './withEmarsysAndroidHelpers';
+import { setMetaDataResource } from './withEmarsysAndroidHelpers';
 
 const MOBILE_ENGAGE_LOGO_ICON = 'mobile_engage_logo_icon';
 
@@ -36,7 +36,7 @@ export const withEmarsysPushMessageLogoIcon: ConfigPlugin = (config) => {
     const applicationArray = config.modResults.manifest.application;
     if (Array.isArray(applicationArray) && applicationArray.length > 0) {
       const app = applicationArray[0];
-      setMetaData(app, 'com.emarsys.mobileengage.small_notification_icon', `@drawable/${MOBILE_ENGAGE_LOGO_ICON}`);
+      setMetaDataResource(app, 'com.emarsys.mobileengage.small_notification_icon', `@drawable/${MOBILE_ENGAGE_LOGO_ICON}`);
     }
     return config;
   });

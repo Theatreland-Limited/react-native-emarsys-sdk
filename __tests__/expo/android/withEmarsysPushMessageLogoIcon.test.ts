@@ -30,7 +30,7 @@ jest.mock('expo/config-plugins', () => ({
 
 // Mock the helper function
 jest.mock('../../../src/expo/android/withEmarsysAndroidHelpers', () => ({
-  setMetaData: jest.fn(),
+  setMetaDataResource: jest.fn(),
 }));
 
 // Mock file system operations
@@ -68,7 +68,7 @@ type ConfigWithModRequest = ExpoConfig & {
         'meta-data'?: Array<{
           $: {
             'android:name': string;
-            'android:value': string;
+            'android:resource': string;
           };
         }>;
       }>;
@@ -78,7 +78,7 @@ type ConfigWithModRequest = ExpoConfig & {
 
 describe('withPushMessageLogoIcon', () => {
   let mockConfig: ConfigWithModRequest;
-  const { setMetaData } = require('../../../src/expo/android/withEmarsysAndroidHelpers');
+  const { setMetaDataResource } = require('../../../src/expo/android/withEmarsysAndroidHelpers');
 
   beforeEach(() => {
     mockConfig = {
@@ -101,7 +101,7 @@ describe('withPushMessageLogoIcon', () => {
     mockFs.copyFileSync.mockImplementation(() => {});
     mockPath.join.mockImplementation((...args) => args.join('/'));
     mockPath.dirname.mockImplementation((filePath) => filePath.split('/').slice(0, -1).join('/'));
-    setMetaData.mockImplementation(() => {});
+    setMetaDataResource.mockImplementation(() => {});
   });
 
   it('should be a function', () => {
@@ -169,7 +169,7 @@ describe('withPushMessageLogoIcon', () => {
 
       const result = await withEmarsysPushMessageLogoIcon(mockConfig);
 
-      expect(setMetaData).toHaveBeenCalledWith(
+      expect(setMetaDataResource).toHaveBeenCalledWith(
         mockConfig.modResults?.manifest.application[0],
         'com.emarsys.mobileengage.small_notification_icon',
         '@drawable/mobile_engage_logo_icon'
@@ -188,7 +188,7 @@ describe('withPushMessageLogoIcon', () => {
 
       const result = await withEmarsysPushMessageLogoIcon(mockConfig);
 
-      expect(setMetaData).not.toHaveBeenCalled();
+      expect(setMetaDataResource).not.toHaveBeenCalled();
       expect(mockConsoleWarn).toHaveBeenCalledWith('Source file /test/project/assets/images/mobile_engage_logo_icon.png does not exist. Skipping AndroidManifest update.');
       // Function should return some config object
       expect(result).toBeDefined();
@@ -228,7 +228,7 @@ describe('withPushMessageLogoIcon', () => {
 
       const result = await withEmarsysPushMessageLogoIcon(configWithEmptyApp);
 
-      expect(setMetaData).not.toHaveBeenCalled();
+      expect(setMetaDataResource).not.toHaveBeenCalled();
       // Function should return some config object
       expect(result).toBeDefined();
     });
@@ -267,7 +267,7 @@ describe('withPushMessageLogoIcon', () => {
 
       const result = await withEmarsysPushMessageLogoIcon(configWithNonArrayApp);
 
-      expect(setMetaData).not.toHaveBeenCalled();
+      expect(setMetaDataResource).not.toHaveBeenCalled();
       // Function should return some config object
       expect(result).toBeDefined();
     });
@@ -303,7 +303,7 @@ describe('withPushMessageLogoIcon', () => {
       expect(mockFs.copyFileSync).toHaveBeenCalled();
       
       // Verify manifest modifications
-      expect(setMetaData).toHaveBeenCalledWith(
+      expect(setMetaDataResource).toHaveBeenCalledWith(
         mockConfig.modResults?.manifest.application[0],
         'com.emarsys.mobileengage.small_notification_icon',
         '@drawable/mobile_engage_logo_icon'
@@ -326,7 +326,7 @@ describe('withPushMessageLogoIcon', () => {
       expect(mockConsoleWarn).toHaveBeenCalledWith('Source file /test/project/assets/images/mobile_engage_logo_icon.png does not exist. Skipping copy.');
       
       // Verify manifest modifications were skipped
-      expect(setMetaData).not.toHaveBeenCalled();
+      expect(setMetaDataResource).not.toHaveBeenCalled();
       expect(mockConsoleWarn).toHaveBeenCalledWith('Source file /test/project/assets/images/mobile_engage_logo_icon.png does not exist. Skipping AndroidManifest update.');
       
       // Function should return some config object
@@ -356,7 +356,7 @@ describe('withPushMessageLogoIcon', () => {
 
       await withEmarsysPushMessageLogoIcon(mockConfig);
 
-      expect(setMetaData).toHaveBeenCalledWith(
+      expect(setMetaDataResource).toHaveBeenCalledWith(
         expect.any(Object),
         'com.emarsys.mobileengage.small_notification_icon',
         '@drawable/mobile_engage_logo_icon'

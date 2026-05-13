@@ -31,6 +31,33 @@ export function setMetaData(
   }
 }
 
+export function setMetaDataResource(
+  app: any,
+  name: string,
+  resource: string
+) {
+  if (!app['meta-data']) {
+    app['meta-data'] = [];
+  }
+
+  const existingIndex = app['meta-data'].findIndex(
+    (item: any) => item.$ && item.$['android:name'] === name
+  );
+
+  const metaDataEntry = {
+    $: {
+      'android:name': name,
+      'android:resource': resource,
+    },
+  };
+
+  if (existingIndex !== -1) {
+    app['meta-data'][existingIndex] = metaDataEntry;
+  } else {
+    app['meta-data'].push(metaDataEntry);
+  }
+}
+
 export function addEmarsysMessagingService(app: any) {
   const SERVICE_NAME = "com.emarsys.service.EmarsysFirebaseMessagingService";
   const MESSAGING_EVENT = "com.google.firebase.MESSAGING_EVENT";

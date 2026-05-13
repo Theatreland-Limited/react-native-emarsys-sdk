@@ -1,4 +1,4 @@
-import { setMetaData, addEmarsysMessagingService } from '../../../src/expo/android/withEmarsysAndroidHelpers';
+import { setMetaData, setMetaDataResource, addEmarsysMessagingService } from '../../../src/expo/android/withEmarsysAndroidHelpers';
 
 describe('withEmarsysAndroidHelpers', () => {
   describe('setMetaData', () => {
@@ -311,6 +311,96 @@ describe('withEmarsysAndroidHelpers', () => {
       expect(app['meta-data']).toHaveLength(1);
       expect(app['meta-data'][0].$['android:name']).toBe('EMSEnableConsoleLogging');
       expect(app['meta-data'][0].$['android:value']).toBe('true');
+    });
+  });
+
+  describe('setMetaDataResource', () => {
+    it('should add meta-data using android:resource to empty application', () => {
+      const app: any = {};
+
+      setMetaDataResource(app, 'com.emarsys.mobileengage.small_notification_icon', '@drawable/mobile_engage_logo_icon');
+
+      expect(app['meta-data']).toHaveLength(1);
+      expect(app['meta-data'][0]).toEqual({
+        $: {
+          'android:name': 'com.emarsys.mobileengage.small_notification_icon',
+          'android:resource': '@drawable/mobile_engage_logo_icon',
+        },
+      });
+    });
+
+    it('should not use android:value when setting a resource', () => {
+      const app: any = {};
+
+      setMetaDataResource(app, 'com.emarsys.mobileengage.small_notification_icon', '@drawable/icon');
+
+      expect(app['meta-data'][0].$['android:value']).toBeUndefined();
+      expect(app['meta-data'][0].$['android:resource']).toBe('@drawable/icon');
+    });
+
+    it('should append to existing meta-data array', () => {
+      const app: any = {
+        'meta-data': [
+          {
+            $: {
+              'android:name': 'EXISTING_NAME',
+              'android:value': 'EXISTING_VALUE',
+            },
+          },
+        ],
+      };
+
+      setMetaDataResource(app, 'com.emarsys.mobileengage.small_notification_icon', '@drawable/icon');
+
+      expect(app['meta-data']).toHaveLength(2);
+      expect(app['meta-data'][1]).toEqual({
+        $: {
+          'android:name': 'com.emarsys.mobileengage.small_notification_icon',
+          'android:resource': '@drawable/icon',
+        },
+      });
+    });
+
+    it('should update existing resource meta-data entry', () => {
+      const app: any = {
+        'meta-data': [
+          {
+            $: {
+              'android:name': 'com.emarsys.mobileengage.small_notification_icon',
+              'android:resource': '@drawable/old_icon',
+            },
+          },
+        ],
+      };
+
+      setMetaDataResource(app, 'com.emarsys.mobileengage.small_notification_icon', '@drawable/new_icon');
+
+      expect(app['meta-data']).toHaveLength(1);
+      expect(app['meta-data'][0]).toEqual({
+        $: {
+          'android:name': 'com.emarsys.mobileengage.small_notification_icon',
+          'android:resource': '@drawable/new_icon',
+        },
+      });
+    });
+
+    it('should replace an existing android:value entry with android:resource when name matches', () => {
+      const app: any = {
+        'meta-data': [
+          {
+            $: {
+              'android:name': 'com.emarsys.mobileengage.small_notification_icon',
+              'android:value': '@drawable/old_icon',
+            },
+          },
+        ],
+      };
+
+      setMetaDataResource(app, 'com.emarsys.mobileengage.small_notification_icon', '@drawable/new_icon');
+
+      expect(app['meta-data']).toHaveLength(1);
+      expect(app['meta-data'][0].$['android:value']).toBeUndefined();
+      expect(app['meta-data'][0].$['android:resource']).toBe('@drawable/new_icon');
     });
   });
 
