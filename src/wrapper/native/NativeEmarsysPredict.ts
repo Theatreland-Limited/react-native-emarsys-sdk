@@ -8,9 +8,12 @@ export interface Spec extends TurboModule {
   trackCategoryView(categoryPath: string): Promise<void>;
   trackSearchTerm(searchTerm: string): Promise<void>;
   trackTag(tag: string, attributes?: UnsafeObject | null): Promise<void>;
-  // Union `UnsafeObject` to convert to `NSDictionary` instead of `JS::NativeEmarsys::{type}` on iOS, for better mapper processing
-  recommendProducts(logic: Logic | UnsafeObject, filters?: Filter[] | null, limit?: number | null, availabilityZone?: string | null): Promise<Product[]>;
-  trackRecommendationClick(product: Product | UnsafeObject): Promise<void>;
+  // Use `UnsafeObject` so these object params map to `NSDictionary` on iOS rather than a generated
+  // `JS::NativeEmarsys::{type}` struct. RN 0.85+ codegen rejects `Type | UnsafeObject` unions
+  // (UnsupportedTypeAnnotationParserError). The typed `Logic`/`Product` shapes are still enforced
+  // by the public wrapper in predict.ts.
+  recommendProducts(logic: UnsafeObject, filters?: Filter[] | null, limit?: number | null, availabilityZone?: string | null): Promise<Product[]>;
+  trackRecommendationClick(product: UnsafeObject): Promise<void>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>(
