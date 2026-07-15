@@ -5,7 +5,7 @@ export const withEmarsysPodfileConfig: ConfigPlugin = (config) => {
     modResults = {
       ...modResults,
       "ios.useFrameworks": "static",
-      "ios.deploymentTarget": "15.1",
+      "ios.deploymentTarget": "16.4",
     };
     return {
       modResults,
